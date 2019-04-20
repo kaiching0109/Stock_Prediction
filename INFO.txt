@@ -1,0 +1,21 @@
+@Author: Kai Ching Suen
+@Data: 4/20/2019
+
+Suggested Libraries:
+  1. https://towardsdatascience.com/predicting-stock-prices-with-python-ec1d0c9bece1
+    import numpy as np
+    from datetime import datetime
+    import smtplib
+    import time
+    # For Prediction
+    from sklearn.linear_model import LinearRegression
+    from sklearn import preprocessing, cross_validation, svm
+  2.
+
+FYI:
+ 1. python parameter typing
+    https://docs.python.org/3/library/typing.html
+ 2. PEP8 python conventions
+    https://www.python.org/dev/peps/pep-0008/
+ 3. Relative path instruction
+    http://python.robasworld.com/python-relative-path/
