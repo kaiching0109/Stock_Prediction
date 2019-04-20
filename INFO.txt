@@ -10,7 +10,16 @@ Suggested Libraries:
     # For Prediction
     from sklearn.linear_model import LinearRegression
     from sklearn import preprocessing, cross_validation, svm
-  2.
+  2. https://www.datacamp.com/community/tutorials/lstm-python-stock-market
+    from pandas_datareader import data
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    import datetime as dt
+    import urllib.request, json
+    import os
+    import numpy as np
+    import tensorflow as tf # This code has been tested with TensorFlow 1.6
+    from sklearn.preprocessing import MinMaxScaler
 
 FYI:
  1. python parameter typing
@@ -19,3 +28,5 @@ FYI:
     https://www.python.org/dev/peps/pep-0008/
  3. Relative path instruction
     http://python.robasworld.com/python-relative-path/
+ 4. ssh key
+    https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key
