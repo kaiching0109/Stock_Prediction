@@ -10,12 +10,24 @@ import datetime
 @Return Pandas.DataFrame
 """
 def read_csv(file_path: str) -> pd.DataFrame:
-    print("read_csv")
-    return pd.read_csv(file_path)
+     print("MESSAGE: Loaded data from " + file_path)
+     try:
+         df = pd.read_csv(file_path)
+         print("SUCCESS: DataFrame Generated")
+         return df
+     except:
+        print("FAIL: DataFrame CANNOT be Generated")
+        return None
 
 def output_csv(df: pd.DataFrame, filename: str, file_path: str = "../../data/processed/")->pd.DataFrame:
-    print("read_csv")
-    return df.to_csv(file_path+filename)
+    try:
+        df.to_csv(file_path+filename)
+        print("SUCCESS: CSV Generated")
+        return True
+    except:
+        print("FAIL: CSV CANNOT be Generated")
+        return False
+
 
 def to_date(date_int: int) -> datetime:
     return datetime.datetime.strptime(str(date_int),'%Y%m%d')

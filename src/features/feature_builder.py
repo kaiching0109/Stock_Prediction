@@ -17,20 +17,29 @@ sys.path.extend([utility_path,data_path])
 """
 IMPORTS
 """
-from custom_func import read_csv,to_date
+from custom_func import read_csv,to_date,output_csv
 import pandas as pd
 import datetime
 
 """
+Read raw data -> Restructure data -> Clean data -> Sort data by date ->
+Generate processed data -> Return Processed DataFrame
+
 @return: pandas.core.frame.DataFrame
 """
 def raw_data_processor():
     DATE_COLUMN_NAME = "date"
+    PROCESSED_DATA_FILENAME = "data.csv"
     df = read_csv(data_path+"/raw/data.csv")
     df[DATE_COLUMN_NAME] = df.date.map(lambda x: to_date(x))
     print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
     df = clean_data(df)
+    df = df.sort_values(DATE_COLUMN_NAME)
     print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
+    if(output_csv(df, PROCESSED_DATA_FILENAME)):
+        print("SUCCESS: processed data file Generated")
+    else:
+        print("FAIL: processed data file fail to Generated")
     return df
 
 """
@@ -65,9 +74,4 @@ def get_historical_data(df, start: int, end:int=None):
 
 if __name__ == '__main__':
     #testing purpose
-    # df = pd.read_csv("../../data/raw/data.csv")
     df = raw_data_processor()
-    print(get_historical_data(df, 20110109))
-    # print(len(df.index))
-    # df = clean_data(df)
-    # print(len(df.index))
