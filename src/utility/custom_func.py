@@ -17,8 +17,8 @@ def output_csv(df: pd.DataFrame, filename: str, file_path: str = "../../data/pro
     print("read_csv")
     return df.to_csv(file_path+filename)
 
-def to_date(date_string: str) -> datetime:
-    return datetime.strptime(date_string,'%Y%m%d')
+def to_date(date_int: int) -> datetime:
+    return datetime.datetime.strptime(str(date_int),'%Y%m%d')
 
 if __name__ == '__main__':
     #testing purpose
