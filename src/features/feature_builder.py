@@ -31,7 +31,7 @@ def raw_data_processor():
     DATE_COLUMN_NAME = "date"
     PROCESSED_DATA_FILENAME = "data.csv"
     df = read_csv(data_path+"/raw/data.csv")
-    df[DATE_COLUMN_NAME] = df.date.map(lambda x: to_date(x))
+    df = date_to_numeric(df)
     print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
     df = clean_data(df)
     df = df.sort_values(DATE_COLUMN_NAME)
@@ -48,14 +48,34 @@ def raw_data_processor():
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
     df = clean_outliner(df)
+    print(df)
+    return df
+
+def date_to_numeric(df: pd.DataFrame):
+    DATE_COLUMN_NAME = "date"
+    # date = df[DATE_COLUMN_NAME].map(lambda x: datetime.datetime.strptime(str(x), '%H:%M:%S'))
+    date = df[DATE_COLUMN_NAME] = df.date.map(lambda x: to_date(x))
+    print(df)
+    df[DATE_COLUMN_NAME] = [i.timestamp() for i in date]
+    return df
+
+"""
+Detect and remove outliers
+@return: pandas.core.frame.DataFrame
+"""
+def clean_outliner(df: pd.DataFrame) -> pd.DataFrame:
+    Q1 = df.quantile(0.25)
+    Q3 = df.quantile(0.75)
+    IQR = Q3 - Q1
+    df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
     return df
 
 """
 @return: pandas.core.frame.DataFrame
 """
-def clean_outliner(df: pd.DataFrame) -> pd.DataFrame:
+def feature_scaling(df: pd.DataFrame) -> pd.DataFrame:
     return df
-
+    
 """
 @param: String start, String end
 Both in foramt of YYYYMMDD
