@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import datasets, linear_model
 from feature_builder import raw_data_processor, feature_scaling
-from vizualizer import visualizePredictResult
+from vizualizer import visualizeSimpleLinearRegreesionResult
 from sklearn.metrics import mean_squared_error, r2_score
 
 class prediction_controller:
@@ -30,20 +30,23 @@ class prediction_controller:
 
     def predict_with_regression(self):
         print("MESSAGE: Predicting with regression")
-        # Create linear regression object
-        regr = linear_model.LinearRegression()
-        # Train the model using the training sets
-        print(self.X_train)
-        print(self.Y_train)
-        regr.fit(self.X_train, self.Y_train)
-        # Make predictions using the testing set
-        Y_pred = regr.predict(self.X_test)
-        self.result["regression"] = {
-            "coefficients": regr.coef_,
-            "mean_squared_error": mean_squared_error(self.Y_test, Y_pred),
-            "r-squared": r2_score(self.Y_test, Y_pred),
-            "y_pred": Y_pred
-        }
+        try:
+            regr = linear_model.LinearRegression() # Create linear regression object
+            regr.fit(self.X_train, self.Y_train) # Train the model using the training sets
+            Y_pred_train = regr.predict(self.X_test) # Make predictions using the training set
+            Y_pred_test = regr.predict(self.X_test) # Make predictions using the testing set
+            self.result["regression"] = {
+                "coefficients": regr.coef_,
+                "mean_squared_error": mean_squared_error(self.Y_test, Y_pred),
+                "r-squared": r2_score(self.Y_test, Y_pred),
+                "y_pred_train": Y_pred_train,
+                "y_pred_test": Y_pred_test
+            }
+            print("SUCCESS: Result predcited with regression is generated.")
+        except Exception as e:
+            self.result["regression"] = None
+            print("FAIL: CANNOT predict with regression.")
+            print(e)
 
     def get_result(self):
         return self.result
@@ -55,7 +58,10 @@ if __name__ == '__main__':
     predictionController = prediction_controller(data_set)
     predictionController.predict_with_regression()
     result = predictionController.get_result()
-    print(result)
     X_train, X_test, Y_train, Y_test = data_set
-    Y_pred = result["regression"]["y_pred"]
-    visualizePredictResult(X_test, Y_test, Y_pred)
+    Y_pred_train = result["regression"]["y_pred_train"]
+    Y_pred_test = result["regression"]["y_pred_test"]
+    visualizeSimpleLinearRegreesionResult(X_train, Y_train, Y_pred_train,
+        "X_train", "Y_train", "X vs Y (Training)") #visualizing training result
+    visualizeSimpleLinearRegreesionResult(X_test, Y_test, Y_pred_test,
+        "X_test", "Y_test", "X vs Y (Testing)") #visualizing test result

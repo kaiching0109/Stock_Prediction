@@ -42,16 +42,23 @@ def visualizeProcessedData(df: pd.DataFrame, col_name_x: str,
     else:
         plt.show()
 
-def visualizePredictResult(x_test: np.ndarray,
-                            y_test: np.ndarray,
+def visualizeSimpleLinearRegreesionResult(x: np.ndarray,
+                            y: np.ndarray,
                             y_pred: np.ndarray,
                             x_label: str=None,
                             y_label: str=None,
-                            filename: str=None):
-    plt.scatter(x_test, y_test,  color='black')
-    plt.plot(x_test, y_pred, color='blue', linewidth=3)
+                            title: str=None,
+                            filename: str=None,
+                            path: str=None):
+    plt.scatter(x, y,  color='red')
+    plt.plot(x, y_pred, color='blue', linewidth=3)
     plt.xticks(())
     plt.yticks(())
+    if(title):
+        plt.title(title)
+    if(x_label && y_label):
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
     if(filename):
         try:
             plt.savefig(figure_path + "/" + filename)

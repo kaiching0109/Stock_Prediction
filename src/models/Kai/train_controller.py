@@ -45,7 +45,6 @@ class train_controller:
             print(e)
 
 
-
     def get_processed_data_set(self):
         return self.X_train, self.X_test, self.Y_train, self.Y_test
 
