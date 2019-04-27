@@ -19,13 +19,14 @@ def read_csv(file_path: str) -> pd.DataFrame:
         print("FAIL: DataFrame CANNOT be Generated")
         return None
 
-def output_csv(df: pd.DataFrame, filename: str, file_path: str = "../../data/processed/")->pd.DataFrame:
+def output_csv(df: pd.DataFrame, filename: str, file_path: str = "../../../data/processed/")->pd.DataFrame:
     try:
         df.to_csv(file_path+filename)
-        print("SUCCESS: CSV Generated")
+        print("SUCCESS: CSV ", filename,  " Generated")
         return True
-    except:
-        print("FAIL: CSV CANNOT be Generated")
+    except Exception as e:
+        print("FAIL: CSV ", filename,  " CANNOT be Generated")
+        print(e)
         return False
 
 

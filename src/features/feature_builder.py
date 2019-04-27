@@ -19,7 +19,10 @@ IMPORTS
 """
 from custom_func import read_csv,to_date,output_csv
 import pandas as pd
+import numpy as np
 import datetime
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 """
 Read raw data -> Restructure data -> Clean data -> Sort data by date ->
@@ -31,12 +34,18 @@ def raw_data_processor():
     DATE_COLUMN_NAME = "date"
     PROCESSED_DATA_FILENAME = "data.csv"
     df = read_csv(data_path+"/raw/data.csv")
-    df = date_to_numeric(df)
-    print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
-    df = clean_data(df)
-    df = df.sort_values(DATE_COLUMN_NAME)
-    print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
-    if(output_csv(df, PROCESSED_DATA_FILENAME)):
+    try:
+        df = date_to_numeric(df)
+        print("MESSAGE: DATA CLEANING started")
+        print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
+        df = clean_data(df)
+        df = df.sort_values(DATE_COLUMN_NAME)
+        print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
+        print("SUCCESS: DATA is CLEAN")
+    except Exception as e:
+        print("FAIL: Error occured during the DATA CLEANING process")
+
+    if(output_csv(df, PROCESSED_DATA_FILENAME, data_path + "/processed")):
         print("SUCCESS: processed data file Generated")
     else:
         print("FAIL: processed data file fail to Generated")
@@ -46,16 +55,15 @@ def raw_data_processor():
 @return: pandas.core.frame.DataFrame
 """
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
+    # df = df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
+    df.fillna(df.mean())
     df = clean_outliner(df)
-    print(df)
     return df
 
 def date_to_numeric(df: pd.DataFrame):
     DATE_COLUMN_NAME = "date"
     # date = df[DATE_COLUMN_NAME].map(lambda x: datetime.datetime.strptime(str(x), '%H:%M:%S'))
     date = df[DATE_COLUMN_NAME] = df.date.map(lambda x: to_date(x))
-    print(df)
     df[DATE_COLUMN_NAME] = [i.timestamp() for i in date]
     return df
 
@@ -73,9 +81,12 @@ def clean_outliner(df: pd.DataFrame) -> pd.DataFrame:
 """
 @return: pandas.core.frame.DataFrame
 """
-def feature_scaling(df: pd.DataFrame) -> pd.DataFrame:
-    return df
-    
+def feature_scaling(train_set: pd.DataFrame, test_set: pd.DataFrame) -> pd.DataFrame:
+    sc = StandardScaler()
+    train_set_scaled = sc.fit_transform(train_set)
+    test_set_scaled = sc.transform(test_set)
+    return train_set_scaled, test_set_scaled
+
 """
 @param: String start, String end
 Both in foramt of YYYYMMDD

@@ -24,22 +24,19 @@ class train_controller:
         self.processed_data = df.values
         self.initialize_data()
 
+    """
+    Here split the data into training and test set.
+    """
     def initialize_data(self):
         print("MESSAGE: Initializing training and test data...")
         SPY_CLOSE_COLUMN_NAME = "spy_close_price"
         SIGNAL_COLUMN_NAME = "signal"
         try:
-            n_samples, n_features = self.processed_data.shape
             X = self.processed_data[:, np.newaxis, 1]
             Y = self.processed_data[:, np.newaxis, 2]
-            # print(Y)
-            # train_size = round(size * 0.80)
-            # self.train_data = self.processed_data[:train_size]
-            # self.test_data = self.processed_data[train_size:]
-            # train_set_scaled, test_set_scaled = feature_scaling(self.train_data, self.test_data)
-
-            # X = self.processed_data[SIGNAL_COLUMN_NAME]
-            # Y = self.processed_data[SPY_CLOSE_COLUMN_NAME]
+            # In this case, X is features of independent where Y is dependent
+            # X is prices and Y is signal
+            # Note that random state is used for random sampling
             self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(
                                                 X, Y, test_size=.2, random_state=0)
             print("SUCCESS: Initialized training and test data")
