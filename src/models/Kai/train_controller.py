@@ -32,8 +32,8 @@ class train_controller:
         SPY_CLOSE_COLUMN_NAME = "spy_close_price"
         SIGNAL_COLUMN_NAME = "signal"
         try:
-            X = self.processed_data[:, np.newaxis, 1]
-            Y = self.processed_data[:, np.newaxis, 2]
+            X = self.processed_data[:, np.newaxis, 2] #independent var is price
+            Y = self.processed_data[:, np.newaxis, 1] #dependent var is signal
             # In this case, X is features of independent where Y is dependent
             # X is prices and Y is signal
             # Note that random state is used for random sampling

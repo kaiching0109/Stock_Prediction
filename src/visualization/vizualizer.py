@@ -56,7 +56,7 @@ def visualizeSimpleLinearRegreesionResult(x: np.ndarray,
     plt.yticks(())
     if(title):
         plt.title(title)
-    if(x_label && y_label):
+    if(x_label and y_label):
         plt.xlabel(x_label)
         plt.ylabel(y_label)
     if(filename):
