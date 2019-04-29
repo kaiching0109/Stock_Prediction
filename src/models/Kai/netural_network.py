@@ -9,7 +9,7 @@ class netural_network():
         self.classifier = Sequential()
         self.X_train, self.Y_train, self.X_test, self.Y_test = X_train, Y_train, X_test, Y_test
         self.set_input_layer("tanh")
-        self.set_hidden_layer("tanh")
+        # self.set_hidden_layer("tanh")
         self.set_output_layer("relu")
 
     # """
@@ -28,15 +28,15 @@ class netural_network():
         so (1 + 1)/2 which is 1 if we choose average.
     """
     def set_input_layer(self, acti_func):
-        self.classifier.add(layers.Dense(1, kernel_initializer="uniform", activation = acti_func, input_dim=1))
+        self.classifier.add(layers.Dense(output_dim=1, kernel_initializer="uniform", activation = acti_func, input_dim=1))
 
     def set_hidden_layer(self, acti_func):
         # self.classifier.add(Dense(output_dim=1, init="uniform",
         #     activation=acti_func))
-        self.classifier.add(layers.Dense(1, kernel_initializer="uniform", activation = acti_func))
+        self.classifier.add(layers.Dense(output_dim=1, kernel_initializer="uniform", activation = acti_func))
 
     def set_output_layer(self, acti_func):
-        self.classifier.add(layers.Dense(1, kernel_initializer="uniform", activation = acti_func))
+        self.classifier.add(layers.Dense(output_dim=1, kernel_initializer="uniform", activation = acti_func))
     """
         optimizer_algo is what approach we use to calculate the cost
         Eg: adam Gass_decent
@@ -57,8 +57,8 @@ class netural_network():
         network. Next, it takes the second 100 samples (from 101st to 200th) \
         and trains the network againself.
         """
-        batch_size = (self.X_train.shape)[0]
-        self.classifier.fit(self.X_train, self.Y_train, batch_size=batch_size, epochs=epoch)
+        # batch_size = (self.X_train.shape)[0]
+        self.classifier.fit(self.X_train, self.Y_train, batch_size=10, epochs=epoch)
         return self.classifier.evaluate(self.X_train, self.Y_train)
 
     def predict(self):

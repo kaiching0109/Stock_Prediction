@@ -59,12 +59,12 @@ class prediction_controller:
             netural_network_controller = netural_network(self.X_train, self.Y_train, self.X_test, self.Y_test)
             netural_network_controller.compile()
             Y_pred_train, Y_pred_test = netural_network_controller.predict()
-            print(Y_pred_train, Y_pred_test)
+            # print(Y_pred_train, Y_pred_test)
             self.result["rnn"] = {
                 "y_pred_train": Y_pred_train,
                 "y_pred_test": Y_pred_test
             }
-            # plt.title('Google Stock Price Prediction')
+            # # plt.title('Google Stock Price Prediction')
             # plt.xlabel('Time')
             # plt.ylabel('Google Stock Price')
             # plt.legend()

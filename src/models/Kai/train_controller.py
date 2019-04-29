@@ -39,6 +39,9 @@ class train_controller:
             # Note that random state is used for random sampling
             self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(
                                                 X, Y, test_size=.2, random_state=0)
+            self.X_train,self.X_test = feature_scaling(self.X_train, self.X_test)
+            # self.Y_train,self.Y_test = feature_scaling(self.Y_train, self.Y_test)
+
             print("SUCCESS: Initialized training and test data")
         except Exception as e:
             print("FAIL: Unable to initialize training and test data")
