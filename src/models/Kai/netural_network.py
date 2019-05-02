@@ -1,7 +1,7 @@
 import keras
 # from keras.models import Sequential
 # from keras.layers import Dense
-# from keras import layers
+from keras import layers
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
@@ -12,6 +12,9 @@ class netural_network():
     def __init__(self, X_train, Y_train, X_test, Y_test):
         self.classifier = Sequential()
         self.X_train, self.Y_train, self.X_test, self.Y_test = X_train, Y_train, X_test, Y_test
+        self.X_train = self.X_train[:,1].reshape(-1, 1) #Get training Price only
+        self.X_test = self.X_test[:, 1].reshape(-1, 1) #Get testing Price only
+        print(self.X_train)
         self.set_input_layer("tanh")
         self.set_hidden_layer("tanh")
         self.set_output_layer("relu")
@@ -64,6 +67,27 @@ class netural_network():
         # batch_size = (self.X_train.shape)[0]
         self.classifier.fit(self.X_train, self.Y_train, batch_size=50, epochs=epoch)
         return self.classifier.evaluate(self.X_train, self.Y_train)
+
+    # def compile(self):
+    #     self.regressor = Sequential()
+    #
+    #     self.regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (self.X_train.shape[1], 1)))
+    #
+    #     # self.regressor.add(Dropout(0.2))
+    #
+    #     self.regressor.add(LSTM(units = 50, return_sequences = True))
+    #     # self.regressor.add(Dropout(0.2))
+    #
+    #     self.regressor.add(LSTM(units = 50, return_sequences = True))
+    #     # self.regressor.add(Dropout(0.2))
+    #
+    #     self.regressor.add(LSTM(units = 50))
+    #     # self.regressor.add(Dropout(0.2))
+    #
+    #     self.regressor.add(Dense(units = 1))
+    #
+    #     self.regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
+
 
     def predict(self):
         y_pred_train = self.classifier.predict(self.X_train)
