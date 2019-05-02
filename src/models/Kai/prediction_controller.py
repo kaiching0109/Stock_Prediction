@@ -36,14 +36,20 @@ class prediction_controller:
     def predict_with_simple_regression(self):
         print("MESSAGE: Predicting with simple regression")
         try:
+            X_train = self.X_train[:,1].reshape(-1, 1) #Get training Price only
+            X_test = self.X_test[:, 1].reshape(-1, 1) #Get testing Price only
             regr = linear_model.LinearRegression() # Create linear regression object
-            regr.fit(self.X_train, self.Y_train) # Train the model using the training sets
-            Y_pred_train = regr.predict(self.X_train) # Make predictions using the training set
-            Y_pred_test = regr.predict(self.X_test) # Make predictions using the testing set
+            regr.fit(X_train, self.Y_train) # Train the model using the training sets
+            Y_pred_train = regr.predict(X_train) # Make predictions using the training set
+            Y_pred_test = regr.predict(X_test) # Make predictions using the testing set
             self.result["simple_regression"] = {
                 "coefficients": regr.coef_,
                 "mean_squared_error": mean_squared_error(self.Y_test, Y_pred_test),
                 "r-squared": r2_score(self.Y_test, Y_pred_test),
+                "x_train": X_train,
+                "y_train": self.Y_train,
+                "x_test": X_test,
+                "y_test": self.Y_test,
                 "y_pred_train": Y_pred_train,
                 "y_pred_test": Y_pred_test
             }
@@ -74,7 +80,6 @@ class prediction_controller:
             print("FAIL: CANNOT predict with RNN.")
             print(e)
 
-
     def get_result(self):
         return self.result
 
@@ -83,19 +88,31 @@ if __name__ == '__main__':
     trainController = train_controller(df)
     data_set = trainController.get_processed_data_set()
     predictionController = prediction_controller(data_set)
+
+    """
+    predict_with_simple_regression
+    """
     # predictionController.predict_with_simple_regression()
-    predictionController.predict_with_netural_network()
-    result = predictionController.get_result()
-    X_train, X_test, Y_train, Y_test = data_set
+    # result = predictionController.get_result()
+    # X_train = result["simple_regression"]["x_train"]
+    # X_test = result["simple_regression"]["x_test"]
+    # Y_train = result["simple_regression"]["y_train"]
+    # Y_test = result["simple_regression"]["y_test"]
     # Y_pred_train = result["simple_regression"]["y_pred_train"]
     # Y_pred_test = result["simple_regression"]["y_pred_test"]
     # visualizeSimpleLinearRegreesionResult(X_train, Y_train, Y_pred_train,
-    #     "X_train", "Y_train", "X vs Y (Training)") #visualizing training result
+    #     "Price", "Signal", "Price vs Signal (Training)") #visualizing training result
     # visualizeSimpleLinearRegreesionResult(X_test, Y_test, Y_pred_test,
-    #     "X_test", "Y_test", "X vs Y (Testing)") #visualizing test result
+    #     "Price", "Signal", "Price vs Signal (Testing)") #visualizing test result
+
+    """
+    predict_with_netural_network
+    """
+    predictionController.predict_with_netural_network()
+        X_train, X_test, Y_train, Y_test = data_set
     Y_pred_train = result["rnn"]["y_pred_train"]
     Y_pred_test = result["rnn"]["y_pred_test"]
     visualizeSimpleLinearRegreesionResult(X_train, Y_train, Y_pred_train,
-        "X_train", "Y_train", "X vs Y (Training)") #visualizing training result
+        "Price", "Signal", "Price vs Signal (Training)") #visualizing training result
     visualizeSimpleLinearRegreesionResult(X_test, Y_test, Y_pred_test,
-        "X_test", "Y_test", "X vs Y (Testing)") #visualizing test result
+        "Price", "Signal", "Price vs Signal (Testing)") #visualizing test result
