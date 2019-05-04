@@ -1,5 +1,6 @@
 """
-Here is to make predictions.
+@ Kai
+Main controller for calling rnn and regression prediction functions
 """
 
 """
@@ -17,15 +18,14 @@ sys.path.extend([feature_path, vizualizer_path])
 
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn import datasets, linear_model
-from feature_builder import raw_data_processor, feature_scaling
-from vizualizer import visualizeSimpleLinearRegreesionResult
-from sklearn.metrics import mean_squared_error, r2_score
-from netural_network import netural_network
 import pandas as pd
 from matplotlib import pyplot
-# from simple_regression import simple_regression
 from train_controller import train_controller
+
+from feature_builder import raw_data_processor, feature_scaling
+from vizualizer import visualizeSimpleLinearRegreesionResult
+from netural_network import netural_network
+from simple_regression import simple_regression
 
 class prediction_controller:
     def __init__(self, data_set:tuple):
@@ -40,54 +40,30 @@ class prediction_controller:
         try:
             X_train = self.X_train[:,1].reshape(-1, 1) #Get training Price only
             X_test = self.X_test[:, 1].reshape(-1, 1) #Get testing Price only
-            print(X_train)
-            print()
-            print(X_test)
-            regr = linear_model.LinearRegression() # Create linear regression object
-            regr.fit(X_train, self.Y_train) # Train the model using the training sets
-            Y_pred_train = regr.predict(X_train) # Make predictions using the training set
-            Y_pred_test = regr.predict(X_test) # Make predictions using the testing set
-            self.result["simple_regression"] = {
-                "coefficients": regr.coef_,
-                "mean_squared_error": mean_squared_error(self.Y_test, Y_pred_test),
-                "r-squared": r2_score(self.Y_test, Y_pred_test),
-                "x_train": X_train,
-                "y_train": self.Y_train,
-                "x_test": X_test,
-                "y_test": self.Y_test,
-                "y_pred_train": Y_pred_train,
-                "y_pred_test": Y_pred_test
-            }
+            simple_regression = simple_regression(X_train, self.Y_train, X_test, self.Y_test)
+            simple_regression.compile()
+            self.result["simple_regression"] = simple_regression.predict()
+            self.result["simple_regression"]["residuals"] = simple_regression.getResiduals()
             print("SUCCESS: Result predcited with regression is generated.")
-            print("coefficients: ", self.result["simple_regression"]["coefficients"])
-            print("mean squared error: ", self.result["simple_regression"]["mean_squared_error"])
-            print("r-squared: ", self.result["simple_regression"]["r-squared"]) # good fit (high  𝑅2 )
-            self.calcResiduals()
+            # print("coefficients: ", self.result["simple_regression"]["coefficients"])
+            # print("mean squared error: ", self.result["simple_regression"]["mean_squared_error"])
+            # print("r-squared: ", self.result["simple_regression"]["r-squared"]) # good fit (high  𝑅2 )
         except Exception as e:
             self.result["simple_regression"] = None
             print("FAIL: CANNOT predict with regression.")
             print(e)
 
-    def calcResiduals(self):
+    def getResiduals(self):
         residuals = [self.result["simple_regression"]["y_test"][i]-self.result["simple_regression"]["y_pred_test"][i] for i in range(len(self.result["simple_regression"]["y_pred_test"]))]
-        residuals = pd.DataFrame(residuals)
-        residuals.plot()
-        pyplot.show()
-        print(residuals.describe())
+        return pd.DataFrame(residuals)
 
     def predict_with_netural_network(self):
         try:
             print("MESSAGE: Predicting with RNN")
-            print(self.X_train)
-            # print(self.X_test)
             netural_network_controller = netural_network(self.X_train, self.Y_train, self.X_test, self.Y_test)
             netural_network_controller.compile()
             Y_pred_train, Y_pred_test = netural_network_controller.predict()
-            print(Y_pred_train, Y_pred_test)
-            self.result["rnn"] = {
-                "y_pred_train": Y_pred_train,
-                "y_pred_test": Y_pred_test
-            }
+            self.result["rnn"] = netural_network_controller.predict()
             print("SUCCESS: Result predcited with RNN is generated.")
         except Exception as e:
             self.result["rnn"] = None

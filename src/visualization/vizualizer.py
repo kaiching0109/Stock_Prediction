@@ -21,11 +21,18 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
+"""
+@ Kai
+Shows processed data through pandas
+"""
 def visualizeProcessedDataFrame() -> pd.DataFrame:
     PROCESSED_DATA_FILENAME = "data.csv"
     df = read_csv(data_path+"/processed/data.csv")
     return df
 
+"""
+@ Kai
+"""
 def visualizeProcessedData(df: pd.DataFrame, col_name_x: str,
                             col_name_y: str, x_label: str, y_label: str, filename: str=None):
     plt.figure(figsize = (18,9))
@@ -42,6 +49,10 @@ def visualizeProcessedData(df: pd.DataFrame, col_name_x: str,
     else:
         plt.show()
 
+"""
+@ Kai
+For visualizing Simple Linear Regreesion Result (Graph)
+"""
 def visualizeSimpleLinearRegreesionResult(x: np.ndarray,
                             y: np.ndarray,
                             y_pred: np.ndarray,
@@ -68,6 +79,21 @@ def visualizeSimpleLinearRegreesionResult(x: np.ndarray,
     else:
         plt.show()
 
+def visualizeResiduals(residuals: pd.DataFrame):
+    print("residuals: ")
+    residuals.plot()
+    pyplot.show()
+    print(residuals.describe())
+
+"""
+@ Kai
+For getting regression report (text), please call this function
+"""
+def displayRegressionReport(regression_report: dict):
+    print("coefficients: ", regression_report["coefficients"])
+    print("mean squared error: ", regression_report["mean_squared_error"])
+    print("r-squared: ", regression_report["r-squared"]) # good fit (high  𝑅2 )
+    visualizeResiduals(regression_report["residuals"])
 
 if __name__ == '__main__':
     df = visualizeProcessedDataFrame()

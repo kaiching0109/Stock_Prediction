@@ -94,7 +94,10 @@ class netural_network():
         y_pred_test = self.classifier.predict(self.X_test)
         self.y_pred_train = y_pred_train
         self.y_pred_test = y_pred_test
-        return y_pred_train, y_pred_test
+        return {
+            "y_pred_train": y_pred_train,
+            "y_pred_test" :y_pred_test
+        }
     #
     # def get_confusion_matrix(condition):
     #     y_pred = (y_pred > condition)

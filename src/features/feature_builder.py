@@ -22,6 +22,7 @@ import pandas as pd
 import numpy as np
 import datetime
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 
 """
@@ -81,11 +82,14 @@ def clean_outliner(df: pd.DataFrame) -> pd.DataFrame:
 """
 @return: pandas.core.frame.DataFrame
 """
-def feature_scaling(train_set: pd.DataFrame, test_set: pd.DataFrame) -> pd.DataFrame:
-    sc = StandardScaler()
+def feature_scaling(train_set: pd.DataFrame) -> pd.DataFrame:
+    # sc = StandardScaler()
+    # train_set_scaled = sc.fit_transform(train_set)
+    # test_set_scaled = sc.transform(test_set)
+    # return train_set_scaled, test_set_scaled
+    sc = MinMaxScaler(feature_range = (0, 1))
     train_set_scaled = sc.fit_transform(train_set)
-    test_set_scaled = sc.transform(test_set)
-    return train_set_scaled, test_set_scaled
+    return train_set_scaled
 
 """
 @param: String start, String end
