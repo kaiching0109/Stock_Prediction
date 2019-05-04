@@ -27,6 +27,7 @@ class train_controller:
 
     """
     Here split the data into training and test set.
+    X is independent and Y is dependent
     """
     def initialize_data(self):
         print("MESSAGE: Initializing training and test data...")
@@ -35,8 +36,8 @@ class train_controller:
         try:
             date = self.processed_data[:, np.newaxis, 0]
             Y = self.processed_data[:, np.newaxis, 2]
-            Y = np.column_stack((date, Y )) # independent var are date and price [[date, price]]
-            X = self.processed_data[:, np.newaxis, 1] #dependent var is signal
+            Y = np.column_stack((date, Y )) # dependent var are date and price [[date, price]]
+            X = self.processed_data[:, np.newaxis, 1] #independent var is signal
             # dataset = pd.DataFrame({"X_train": X[:,0], "Y_train": Y[:, 1]}, index=list(range(len(X[:] - 1))), columns=['X_train', 'Y_train'])
             # print(dataset)
             # print(Y.shape)

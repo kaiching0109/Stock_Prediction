@@ -26,6 +26,7 @@ class simple_regression:
         Y_pred_test = self.regr.predict(self.X_test) # Make predictions using the testing set
         return {
             "coefficients": self.regr.coef_,
+            "intercept": self.regr.intercept_,
             "mean_squared_error": mean_squared_error(self.Y_test, Y_pred_test),
             "r-squared": r2_score(self.Y_test, Y_pred_test),
             "x_train": self.X_train,
