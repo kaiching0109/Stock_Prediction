@@ -1,3 +1,8 @@
+"""
+@ Kai
+Here does all rnn work
+"""
+
 import keras
 # from keras.models import Sequential
 # from keras.layers import Dense
