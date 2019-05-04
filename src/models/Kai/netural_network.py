@@ -13,7 +13,7 @@ from keras.layers import LSTM
 from keras.layers import Dropout
 # from sklearn.matrics import confusion_matrix
 
-class netural_network():
+class netural_network:
     def __init__(self, X_train, Y_train, X_test, Y_test):
         self.classifier = Sequential()
         self.X_train, self.Y_train, self.X_test, self.Y_test = X_train, Y_train, X_test, Y_test

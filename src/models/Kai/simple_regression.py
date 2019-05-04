@@ -5,13 +5,21 @@ Here does all simple regression work
 
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn import datasets, linear_model
+import pandas as pd
 
-class simple_regression():
+class simple_regression:
     def __init__(self, X_train, Y_train, X_test, Y_test):
+        self.X_train, self.Y_train, self.X_test, self.Y_test = X_train, Y_train, X_test, Y_test
+        # dataset = pd.DataFrame({"X_train": X_train[:,0], "Y_train": Y_train[:, 0]}, index=list(range(len(X_train[:] - 1))), columns=['X_train', 'Y_train'])
+        # print(dataset)
+        # self.X_train = self.X_train[:, 0]
+        # self.X_test = self.X_test[:, 0]
+        # self.Y_train = self.X_test[:, 1]
+        # self.Y_test = self.X_test[:, 1]
         self.regr = linear_model.LinearRegression() # Create linear regression object
 
-    def complie(self):
-        self.regr.fit(X_train, self.Y_train) # Train the model using the training sets
+    def compile(self):
+        self.regr.fit(self.X_train, self.Y_train) # Train the model using the training sets
 
     def predict(self):
         Y_pred_train = self.regr.predict(self.X_train) # Make predictions using the training set
@@ -28,6 +36,6 @@ class simple_regression():
             "y_pred_test": Y_pred_test
         }
 
-    def getResiduals(self):
-        residuals = [self.result["simple_regression"]["y_test"][i]-self.result["simple_regression"]["y_pred_test"][i] for i in range(len(self.result["simple_regression"]["y_pred_test"]))]
+    def getResiduals(self, result):
+        residuals = [result["y_test"][i]-result["y_pred_test"][i] for i in range(len(result["y_pred_test"]))]
         return pd.DataFrame(residuals)

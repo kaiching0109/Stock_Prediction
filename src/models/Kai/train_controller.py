@@ -34,9 +34,11 @@ class train_controller:
         SIGNAL_COLUMN_NAME = "signal"
         try:
             date = self.processed_data[:, np.newaxis, 0]
-            X = self.processed_data[:, np.newaxis, 2]
-            X = np.column_stack((date, X )) # independent var are date and price [[date, price]]
-            Y = self.processed_data[:, np.newaxis, 1] #dependent var is signal
+            Y = self.processed_data[:, np.newaxis, 2]
+            Y = np.column_stack((date, Y )) # independent var are date and price [[date, price]]
+            X = self.processed_data[:, np.newaxis, 1] #dependent var is signal
+            # dataset = pd.DataFrame({"X_train": X[:,0], "Y_train": Y[:, 1]}, index=list(range(len(X[:] - 1))), columns=['X_train', 'Y_train'])
+            # print(dataset)
             # print(Y.shape)
             # In this case, X is features of independent where Y is dependent
             # X is prices and Y is signal

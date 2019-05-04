@@ -23,7 +23,7 @@ from matplotlib import pyplot
 from train_controller import train_controller
 
 from feature_builder import raw_data_processor, feature_scaling
-from vizualizer import visualizeSimpleLinearRegreesionResult
+from vizualizer import visualizeSimpleLinearRegreesionResult, displayRegressionReport
 from netural_network import netural_network
 from simple_regression import simple_regression
 
@@ -38,12 +38,13 @@ class prediction_controller:
     def predict_with_simple_regression(self):
         print("MESSAGE: Predicting with simple regression")
         try:
-            X_train = self.X_train[:,1].reshape(-1, 1) #Get training Price only
-            X_test = self.X_test[:, 1].reshape(-1, 1) #Get testing Price only
-            simple_regression = simple_regression(X_train, self.Y_train, X_test, self.Y_test)
-            simple_regression.compile()
-            self.result["simple_regression"] = simple_regression.predict()
-            self.result["simple_regression"]["residuals"] = simple_regression.getResiduals()
+            # print(self.X_train)
+            Y_train = self.Y_train[:, 1].reshape(-1, 1) #Get training Price only
+            Y_test = self.Y_test[:, 1].reshape(-1, 1) #Get testing Price only
+            simpleRegression = simple_regression(self.X_train, Y_train, self.X_test, Y_test)
+            simpleRegression.compile()
+            self.result["simple_regression"] = simpleRegression.predict()
+            self.result["simple_regression"]["residuals"] = simpleRegression.getResiduals(self.result["simple_regression"])
             print("SUCCESS: Result predcited with regression is generated.")
             # print("coefficients: ", self.result["simple_regression"]["coefficients"])
             # print("mean squared error: ", self.result["simple_regression"]["mean_squared_error"])
@@ -75,9 +76,11 @@ class prediction_controller:
 
 if __name__ == '__main__':
     df = raw_data_processor()
+    # print(df)
     trainController = train_controller(df)
     data_set = trainController.get_processed_data_set()
     predictionController = prediction_controller(data_set)
+    predictionController.predict_with_simple_regression()
 
     """
     predict_with_simple_regression
@@ -90,10 +93,17 @@ if __name__ == '__main__':
     Y_test = result["simple_regression"]["y_test"]
     Y_pred_train = result["simple_regression"]["y_pred_train"]
     Y_pred_test = result["simple_regression"]["y_pred_test"]
+    #
+    # print(X_train.shape)
+    # print(Y_test.shape)
+    # print(Y_pred_train.shape)
+    # print(Y_pred_test.shape)
+
     visualizeSimpleLinearRegreesionResult(X_train, Y_train, Y_pred_train,
         "Signal", "Price", "Price vs Signal (Training)") #visualizing training result
     visualizeSimpleLinearRegreesionResult(X_test, Y_test, Y_pred_test,
         "Signal", "Price", "Price vs Signal (Testing)") #visualizing test result
+    displayRegressionReport(result["simple_regression"])
 
     """
     predict_with_netural_network
