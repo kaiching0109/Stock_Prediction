@@ -1,0 +1,33 @@
+ATTEMPT:
+FAIL:
+  I tried to use RNN to do the task, however, due the unfamiliarity toward
+  the technology, the result seems really odd. I am sure that something
+  went wrong during the backprogration since the accuracy didn't raise much even
+  with 50 batch size and 100 epochs, which means the weights of the neruon weren't
+  updated.
+  In the task, we tried to use kersa due to it's simplicity, however, we were
+  treating it as a blackbox. A lot of the progresses were handle within the
+  blackbox and it's hard to debug where was wrong. If there is an other chance,
+  I would try implementing with TensorFlow instead so I can clearly see how
+  the progress works and have a better grasp on it.
+
+SUCCESS:
+  We also implemented Regression model to our data, and we have a nice result of it.
+  ANALYSIS
+    1. R-squared
+    The result of R-squard is 0.9911 in our regression model. R-squared (R^2) is a statistical
+    measure that represents the proportion of the variance for a dependent variable
+    that's explained by an independent variable or variables in a regression model.
+    The higher R^2 is, then the greater portion of observed variation can be explained
+    by the model's inputs. In our case, nearly 100% of our observed variation(Signal)
+    , the movement of it, can be explained by the model's input (Price) .
+
+    2. Mean Squared Error
+    The result of Mean Squared Error is 0.002 in our regression model. It supposes
+    to show the distance between our predicted and test values. However, the
+    mean Squared Error of our result is really small. It means the predicted result
+    for signal is almost as same as the test values.
+
+    3. Coefficient
+    The coefficient value is 0.02 which means the mean of the dependent variable,
+    price, have a 0.02 positive shift in the independent variable.
