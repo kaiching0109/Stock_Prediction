@@ -1,0 +1,31 @@
+Cleaning data
+
+  1) Read raw data
+    df = read_csv(data_path+"/raw/data.csv")
+    ~ use read_csv from custom_func to read data in csv file
+      ~ use read_csv function from pandas with check function if succeeded
+    
+  2) Restructure data
+    df[DATE_COLUMN_NAME] = df.date.map(lambda x: to_date(x))
+    ~ use to_date from custom_func to turn int date data  (format of YYYYMMDD) into datetime objects
+      return datetime.datetime.strptime(str(date_int),'%Y%m%d')
+      ~ first turn int into String and then to datetime
+      
+    ~ date.map to map the date data
+    
+  3) Clean data
+    df = df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
+    ~ use dropna function to drop any row with missing data
+    
+  4) Sort data by date
+    df = df.sort_values(DATE_COLUMN_NAME)
+    ~ sort_values function to sort the data by in ascending order
+    
+  5) Generate processed data
+     if(output_csv(df, PROCESSED_DATA_FILENAME)):
+        print("SUCCESS: processed data file Generated")
+     ~ use to_csv function to convert datarfame into csv and check if succeeded
+     
+  6) Return Processed DataFrame
+     return df
+     ~ return dataframe
