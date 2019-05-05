@@ -17,9 +17,8 @@ class netural_network:
     def __init__(self, X_train, Y_train, X_test, Y_test):
         self.classifier = Sequential()
         self.X_train, self.Y_train, self.X_test, self.Y_test = X_train, Y_train, X_test, Y_test
-        self.X_train = self.X_train[:,1].reshape(-1, 1) #Get training Price only
-        self.X_test = self.X_test[:, 1].reshape(-1, 1) #Get testing Price only
-        print(self.X_train)
+        # self.X_train = self.X_train[:,0].reshape(-1, 1) #Get training Price only
+        # self.X_test = self.X_test[:, 0].reshape(-1, 1) #Get testing Price only
         self.set_input_layer("tanh")
         self.set_hidden_layer("tanh")
         self.set_output_layer("relu")

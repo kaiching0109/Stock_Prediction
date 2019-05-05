@@ -40,7 +40,7 @@ def raw_data_processor():
         print("MESSAGE: DATA CLEANING started")
         print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
         df = clean_data(df)
-        df = df.sort_values(DATE_COLUMN_NAME)
+        # df = df.sort_values(DATE_COLUMN_NAME)
         print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
         print("SUCCESS: DATA is CLEAN")
     except Exception as e:

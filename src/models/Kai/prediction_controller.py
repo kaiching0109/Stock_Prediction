@@ -15,6 +15,7 @@ feature_path = os.path.join(rootDir, 'features')
 vizualizer_path = os.path.join(rootDir, 'visualization')
 # data_path = os.path.join(rootDir, 'data')
 sys.path.extend([feature_path, vizualizer_path])
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -61,7 +62,9 @@ class prediction_controller:
     def predict_with_netural_network(self):
         try:
             print("MESSAGE: Predicting with RNN")
-            netural_network_controller = netural_network(self.X_train, self.Y_train, self.X_test, self.Y_test)
+            Y_train = self.Y_train[:, 1].reshape(-1, 1) #Get training Price only
+            Y_test = self.Y_test[:, 1].reshape(-1, 1) #Get testing Price only
+            netural_network_controller = netural_network(self.X_train, Y_train, self.X_test, Y_test)
             netural_network_controller.compile()
             Y_pred_train, Y_pred_test = netural_network_controller.predict()
             self.result["rnn"] = netural_network_controller.predict()
@@ -80,7 +83,6 @@ if __name__ == '__main__':
     trainController = train_controller(df)
     data_set = trainController.get_processed_data_set()
     predictionController = prediction_controller(data_set)
-    predictionController.predict_with_simple_regression()
 
     """
     predict_with_simple_regression
@@ -93,12 +95,6 @@ if __name__ == '__main__':
     Y_test = result["simple_regression"]["y_test"]
     Y_pred_train = result["simple_regression"]["y_pred_train"]
     Y_pred_test = result["simple_regression"]["y_pred_test"]
-    #
-    # print(X_train.shape)
-    # print(Y_test.shape)
-    # print(Y_pred_train.shape)
-    # print(Y_pred_test.shape)
-
     visualizeSimpleLinearRegreesionResult(X_train, Y_train, Y_pred_train,
         "Signal", "Price", "Price vs Signal (Training)") #visualizing training result
     visualizeSimpleLinearRegreesionResult(X_test, Y_test, Y_pred_test,
@@ -113,10 +109,8 @@ if __name__ == '__main__':
     # X_train, X_test, Y_train, Y_test = data_set
     # Y_pred_train = result["rnn"]["y_pred_train"]
     # Y_pred_test = result["rnn"]["y_pred_test"]
-    # print(Y_pred_train)
-    # print(Y_train)
-    # X_train = X_train[:,1].reshape(-1, 1) #Get training Price only
-    # X_test = X_test[:, 1].reshape(-1, 1) #Get testing Price only
+    # Y_train = Y_train[:, 1].reshape(-1, 1) #Get training Price only
+    # Y_test = Y_test[:, 1].reshape(-1, 1) #Get testing Price only
     # visualizeSimpleLinearRegreesionResult(X_train, Y_train, Y_pred_train,
     #     "Price", "Signal", "Price vs Signal (Training)") #visualizing training result
     # visualizeSimpleLinearRegreesionResult(X_test, Y_test, Y_pred_test,

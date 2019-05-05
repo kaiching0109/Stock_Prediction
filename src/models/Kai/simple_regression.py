@@ -10,12 +10,6 @@ import pandas as pd
 class simple_regression:
     def __init__(self, X_train, Y_train, X_test, Y_test):
         self.X_train, self.Y_train, self.X_test, self.Y_test = X_train, Y_train, X_test, Y_test
-        # dataset = pd.DataFrame({"X_train": X_train[:,0], "Y_train": Y_train[:, 0]}, index=list(range(len(X_train[:] - 1))), columns=['X_train', 'Y_train'])
-        # print(dataset)
-        # self.X_train = self.X_train[:, 0]
-        # self.X_test = self.X_test[:, 0]
-        # self.Y_train = self.X_test[:, 1]
-        # self.Y_test = self.X_test[:, 1]
         self.regr = linear_model.LinearRegression() # Create linear regression object
 
     def compile(self):

@@ -1,3 +1,7 @@
+"""
+@Kai
+"""
+
 ATTEMPT:
 FAIL:
   I tried to use RNN to do the task, however, due the unfamiliarity toward
@@ -15,7 +19,7 @@ SUCCESS:
   We also implemented Regression model to our data, and we have a nice result of it.
   ANALYSIS
     1. R-squared
-    The result of R-squard is 0.9911 in our regression model. R-squared (R^2) is a statistical
+    The result of R-squard is 0.9915 in our regression model. R-squared (R^2) is a statistical
     measure that represents the proportion of the variance for a dependent variable
     that's explained by an independent variable or variables in a regression model.
     The higher R^2 is, then the greater portion of observed variation can be explained
@@ -23,11 +27,15 @@ SUCCESS:
     , the movement of it, can be explained by the model's input (Price) .
 
     2. Mean Squared Error
-    The result of Mean Squared Error is 0.002 in our regression model. It supposes
+    The result of Mean Squared Error is 3.724 in our regression model. It supposes
     to show the distance between our predicted and test values. However, the
     mean Squared Error of our result is really small. It means the predicted result
-    for signal is almost as same as the test values.
+    for signal is almost as same as the test values. 3.724 means that the difference
+    between predicted values and actual values are averagely 3.8
 
-    3. Coefficient
-    The coefficient value is 0.02 which means the mean of the dependent variable,
-    price, have a 0.02 positive shift in the independent variable.
+    3. Coefficient and Intercept
+    The coefficient value is 40.62 which means the mean of the dependent variable,
+    price, have a 40.62 positive shift in the independent variable, signal.
+    y=a+bx where a is our Intercept and b is our Coefficient. In our cases,
+    y = 1.89742821 + 40.61966788x, a unit increase in x(Singal) results in an
+    increase in average y(Price) by rougly 41 units.

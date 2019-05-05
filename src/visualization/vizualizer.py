@@ -21,6 +21,9 @@ import numpy as np
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
+from sklearn.linear_model import Ridge
+from yellowbrick.regressor import ResidualsPlot
+
 
 """
 @ Kai
@@ -80,11 +83,18 @@ def visualizeSimpleLinearRegreesionResult(x: np.ndarray,
     else:
         plt.show()
 
-def visualizeResiduals(residuals: pd.DataFrame):
+def visualizeResiduals(result: dict):
     print("residuals: ")
-    residuals.plot()
-    pyplot.show()
-    print(residuals.describe())
+    # residuals.plot()
+    # plt.show()
+    print(result["residuals"].describe())
+    # Instantiate the linear model and visualizer
+    ridge = Ridge()
+    visualizer = ResidualsPlot(ridge)
+
+    visualizer.fit(result["x_train"], result["y_train"])  # Fit the training data to the model
+    visualizer.score(result["x_test"], result["y_test"])  # Evaluate the model on the test data
+    visualizer.poof()                 # Draw/show/poof the dat
 
 """
 @ Kai
@@ -92,9 +102,10 @@ For getting regression report (text), please call this function
 """
 def displayRegressionReport(regression_report: dict):
     print("coefficients: ", regression_report["coefficients"])
+    print("intercept: ", regression_report["intercept"])
     print("mean squared error: ", regression_report["mean_squared_error"])
     print("r-squared: ", regression_report["r-squared"]) # good fit (high  𝑅2 )
-    visualizeResiduals(regression_report["residuals"])
+    visualizeResiduals(regression_report)
 
 if __name__ == '__main__':
     df = visualizeProcessedDataFrame()
