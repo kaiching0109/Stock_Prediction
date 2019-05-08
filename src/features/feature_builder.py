@@ -42,7 +42,7 @@ def raw_data_processor(df):
         df = date_to_numeric(df)
         print("MESSAGE: DATA CLEANING started")
         print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
-        df = clean_data(df)
+        df,excluded_data = clean_data(df)
         # df = df.sort_values(DATE_COLUMN_NAME)
         print("MESSAGE: data row before cleaning: " + str((df.shape)[0]))
         print("SUCCESS: DATA is CLEAN")
@@ -53,7 +53,7 @@ def raw_data_processor(df):
         print("SUCCESS: processed data file Generated")
     else:
         print("FAIL: processed data file fail to Generated")
-    return df
+    return df, excluded_data
 
 """
 @return: pandas.core.frame.DataFrame
@@ -61,8 +61,8 @@ def raw_data_processor(df):
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     # df = df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
     df.fillna(df.mean())
-    df = clean_outliner(df)
-    return df
+    df, excluded_data = clean_outliner(df)
+    return df, excluded_data
 
 def date_to_numeric(df: pd.DataFrame):
     DATE_COLUMN_NAME = "date"
@@ -79,8 +79,9 @@ def clean_outliner(df: pd.DataFrame) -> pd.DataFrame:
     Q1 = df.quantile(0.25)
     Q3 = df.quantile(0.75)
     IQR = Q3 - Q1
+    excluded_data = df[((df <= (Q1 - 1.5 * IQR)) |(df >= (Q3 + 1.5 * IQR))).any(axis=1)]
     df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
-    return df
+    return df, excluded_data
 
 """
 @return: pandas.core.frame.DataFrame

@@ -2,7 +2,6 @@
 @Data: 4/20/2019
 
 START:
-
 # In project root
 $ pip freeze > requirements.txt
 # And to install the packages
@@ -13,6 +12,10 @@ Kai Ching Suen
 Kaito Kumagia
 Manan Duggle
 Unais Ibarahim
+
+REPOSITORY:
+dev branch and master branch
+https://github.com/kaiching0109/Stock_Prediction
 
 PROJECT GOALS:
 this project is to test a data source (signal, second column in data.csv) \

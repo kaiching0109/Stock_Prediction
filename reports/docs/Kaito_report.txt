@@ -4,26 +4,58 @@
 
 Cleaning data
 
-  1) Read raw data
-    use read_csv from custom_func to read data in csv file
-      ~ use read_csv function from pandas to read data and check if succeeded
-    
-  2) Restructure data
-    ~ use to_date from custom_func to turn int date data  (format of YYYYMMDD) into datetime objects
-    ~ save timestamp as date
-    
-  3) Clean data
-    There are 2 types of data we need to identify and handle in order to conduct the appropriate regression analysis: null data and outlier. Null data will affect means and other statics as error. outlier will affect the value of statics and make it harder to find the true patter of data.
-    Filled null data with mean. Because stock data is time series, it is important to have Data for all the time in order to find the pattern of the data and predict future value.    
-	However, since it is also important to omit outliers so that regression would not be overly affected by a few outliers. To do this, calculate Q1 and Q3 to find IQR and omit data row smaller the Q1 - 1.5*IQR or larger than Q3 + 1.5*IQR. Otherwise, regression would be overestimated or underestimated. This eliminated 9 rows and the total rows decreased from 667 to 658.
-    
-  4) Sort data by date
-    
-  5) Generate processed data
-     if(output_csv(df, PROCESSED_DATA_FILENAME)):
-        print("SUCCESS: processed data file Generated")
-     ~ use to_csv function to convert datarfame into csv and check if succeeded
-     
-  6) Return Processed DataFrame
-     return df
-     ~ return dataframe
+  Errors:
+    date	signal	spy_close_price
+    303	1.364256e+09	-3.802670	156.1900
+    421	1.378944e+09	4.193204	618.9500
+    422	1.379030e+09	4.143689	619.3300
+    423	1.379290e+09	4.124515	710.3100
+    459	1.383610e+09	429.514563	176.2700
+    460	1.383696e+09	432.961165	177.1700
+    570	1.397434e+09	0.004560	182.9401
+    571	1.397520e+09	0.454976	184.2000
+    572	1.397606e+09	0.455898	186.1250
+
+    Data like 459, 460 have a really huge signal and 421, 422 and 423 have an extreme
+    price so they could be potentially error data.
+
+  Approach to Errors:
+    For all nan data, we filled them with means, however for any data that lies
+    outside of the IQR margin, we simply excluded the entire row since we can't
+    be sure about how much the potential error could affect our calculation.
+
+      1) extreme data: eliminate outliers
+      2) missing data: fill with means
+      3) categorial variables: date is categorial so it was converted
+
+  Method to locate outliers (potential errors):
+    """
+    Detect and remove outliers
+    @return: pandas.core.frame.DataFrame
+    """
+    def clean_outliner(df: pd.DataFrame) -> pd.DataFrame:
+        Q1 = df.quantile(0.25)
+        Q3 = df.quantile(0.75)
+        IQR = Q3 - Q1
+        excluded_data = df[((df <= (Q1 - 1.5 * IQR)) |(df >= (Q3 + 1.5 * IQR))).any(axis=1)]
+        df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
+        return df, excluded_data
+
+  Processes in details:
+    1) Read raw data
+      use read_csv from custom_func to read data in csv file
+        ~ use read_csv function from pandas to read data and check if succeeded
+    2) Restructure data
+      ~ use to_date from custom_func to turn int date data  (format of YYYYMMDD) into datetime objects
+      ~ save timestamp as date
+    3) Clean data
+      There are 2 types of data we need to identify and handle in order to conduct the appropriate regression analysis: null data and outlier. Null data will affect means and other statics as error. outlier will affect the value of statics and make it harder to find the true patter of data.
+      Filled null data with mean. Because stock data is time series, it is important to have Data for all the time in order to find the pattern of the data and predict future value. However, since it is also important to omit outliers so that regression would not be overly affected by a few outliers. To do this, calculate Q1 and Q3 to find IQR and omit data row smaller the Q1 - 1.5*IQR or larger than Q3 + 1.5*IQR. Otherwise, regression would be overestimated or underestimated. This eliminated 9 rows and the total rows decreased from 667 to 658.
+    4) Sort data by date
+    5) Generate processed data
+       if(output_csv(df, PROCESSED_DATA_FILENAME)):
+          print("SUCCESS: processed data file Generated")
+       ~ use to_csv function to convert datarfame into csv and check if succeeded
+    6) Return Processed DataFrame
+       return df
+       ~ return dataframe
