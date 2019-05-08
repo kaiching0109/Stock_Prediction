@@ -14,7 +14,6 @@ Kaito Kumagia
 Manan Duggle
 Unais Ibarahim
 
-
 PROJECT GOALS:
 this project is to test a data source (signal, second column in data.csv) \
   which claims to be predictive of future returns of the SP500 index \
