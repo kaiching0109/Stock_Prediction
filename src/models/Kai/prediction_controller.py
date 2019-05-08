@@ -78,7 +78,7 @@ class prediction_controller:
         return self.result
 
 if __name__ == '__main__':
-    df = raw_data_processor()
+    df, excluded_data = raw_data_processor()
     # print(df)
     trainController = train_controller(df)
     data_set = trainController.get_processed_data_set()
