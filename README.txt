@@ -64,9 +64,6 @@ FILES:
 ├── README.md          <- Front page of the project. Let everyone
 │                         know the major points.
 │
-├── models             <- Trained and serialized models, model
-│                         predictions, or model summaries.
-│
 ├── notebooks          <- Jupyter notebooks. Use set naming
 │                         E.g. `1.2-rd-data-exploration`.
 │
@@ -81,7 +78,6 @@ FILES:
 │   └── raw            <- The original, immutable data.
 │
 └── src                <- Source code for use in this project.
-    ├── __init__.py    <- Makes src a Python module.
     │
     ├── utility <- General functions to import.
     |    └── custom_func.py
@@ -95,6 +91,8 @@ FILES:
     │   │
     │   ├── prediction_controller.py
     │   └── train_controller.py
+    |   └── simple_regression.py
+    |   └── netural_network.py
     │
     └── visualizations            <- Scripts to create visualizations.
         └── vizualizer.py
