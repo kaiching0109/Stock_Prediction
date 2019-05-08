@@ -1,25 +1,23 @@
+"""
+@Kaito
+"""
+
 Cleaning data
 
   1) Read raw data
-    df = read_csv(data_path+"/raw/data.csv")
-    ~ use read_csv from custom_func to read data in csv file
-      ~ use read_csv function from pandas with check function if succeeded
+    use read_csv from custom_func to read data in csv file
+      ~ use read_csv function from pandas to read data and check if succeeded
     
   2) Restructure data
-    df[DATE_COLUMN_NAME] = df.date.map(lambda x: to_date(x))
     ~ use to_date from custom_func to turn int date data  (format of YYYYMMDD) into datetime objects
-      return datetime.datetime.strptime(str(date_int),'%Y%m%d')
-      ~ first turn int into String and then to datetime
-      
-    ~ date.map to map the date data
+    ~ save timestamp as date
     
   3) Clean data
-    df = df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
-    ~ use dropna function to drop any row with missing data
+    There are 2 types of data we need to identify and handle in order to conduct the appropriate regression analysis: null data and outlier. Null data will affect means and other statics as error. outlier will affect the value of statics and make it harder to find the true patter of data.
+    Filled null data with mean. Because stock data is time series, it is important to have Data for all the time in order to find the pattern of the data and predict future value.    
+	However, since it is also important to omit outliers so that regression would not be overly affected by a few outliers. To do this, calculate Q1 and Q3 to find IQR and omit data row smaller the Q1 - 1.5*IQR or larger than Q3 + 1.5*IQR. Otherwise, regression would be overestimated or underestimated. This eliminated 9 rows and the total rows decreased from 667 to 658.
     
   4) Sort data by date
-    df = df.sort_values(DATE_COLUMN_NAME)
-    ~ sort_values function to sort the data by in ascending order
     
   5) Generate processed data
      if(output_csv(df, PROCESSED_DATA_FILENAME)):
