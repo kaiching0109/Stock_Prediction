@@ -31,10 +31,13 @@ Generate processed data -> Return Processed DataFrame
 
 @return: pandas.core.frame.DataFrame
 """
-def raw_data_processor():
+def get_raw_data():
     DATE_COLUMN_NAME = "date"
-    PROCESSED_DATA_FILENAME = "data.csv"
     df = read_csv(data_path+"/raw/data.csv")
+    return df
+
+def raw_data_processor(df):
+    PROCESSED_DATA_FILENAME = "data.csv"
     try:
         df = date_to_numeric(df)
         print("MESSAGE: DATA CLEANING started")
